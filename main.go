@@ -8,6 +8,15 @@ import (
 	"strings"
 )
 
+// ormap of strings.HasPrefix
+func hasAnyPrefix(s string, prefix []string) bool {
+	b := false
+	for _, p := range prefix {
+		b = b || strings.HasPrefix(s, p)
+	}
+	return b
+}
+
 // Get Content-Type of http.Response without charset
 func getContentType(resp *http.Response) string {
 	return strings.Split(resp.Header["Content-Type"][0], ";")[0]
@@ -80,8 +89,8 @@ func handleHttp(url string) {
 	ct := getContentType(resp)
 	switch {
 	case ct == "text/html":
-		shExec("palemoon --new-window " + url)
-	case strings.HasPrefix(ct, "audio/"), strings.HasPrefix(ct, "video/"):
+		shExec(App[ct] + url)
+	case hasAnyPrefix(ct, []string{"audio/", "video/"}):
 		shExec("mpv " + url)
 	default:
 		defer resp.Body.Close()
@@ -105,10 +114,11 @@ func main() {
 	switch {
 	case strings.HasPrefix(str, "https://www.youtube.com/watch?v="):
 		shExec("ytdl -o - " + str + " | mpv -")
-	case strings.HasPrefix(str, "http://"), strings.HasPrefix(str, "https://"):
+	case hasAnyPrefix(str, []string{"http://", "https://"}):
 		handleHttp(str)
+	// TODO: check if str is in file,dir cache or a man page
+	// case isfile, isdir:
 	default:
-		// TODO: check if str is file or dir in a cached file
-		os.Exit(0)
+		shExec(App["search"] + " " + str)
 	}
 }
