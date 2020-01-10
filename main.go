@@ -31,7 +31,7 @@ func getString() string {
 }
 
 // Get Content-Type of the file reciding in path
-func getFileContentType(path string) string {
+func getFileType(path string) string {
 	f, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -50,7 +50,7 @@ func getFileContentType(path string) string {
 
 // execute Cmd in the background through sh
 func shExec(scmd string) {
-	// using sh is now a design decision
+	// using sh is a design decision
 	cmd := exec.Command("sh", "-c", scmd)
 	err := cmd.Start()
 	if err != nil {
@@ -59,8 +59,10 @@ func shExec(scmd string) {
 }
 
 // Open file according to its MimeType
-func openFile(path string) {
-	mime := getFileContentType(path)
+func openFile(path, mime string) {
+	if mime == "" {
+		mime = getFileType(path)
+	}
 
 OLoop:
 	for k, v := range App {
@@ -103,7 +105,7 @@ func handleHttp(url string) {
 		if err != nil {
 			panic(err)
 		}
-		openFile("/tmp/plumb")
+		openFile("/tmp/plumb", ct)
 	}
 }
 
