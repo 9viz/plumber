@@ -1,5 +1,11 @@
 package main
 
+import (
+	"net/http"
+	"os"
+	"strings"
+)
+
 // Get Content-Type of the file reciding in path
 func getFileType(path string) string {
 	f, err := os.Open(path)

@@ -1,3 +1,11 @@
+package main
+
+import (
+	"net/http"
+	"os/exec"
+	"strings"
+)
+
 // ormap of strings.HasPrefix
 func hasAnyPrefix(s string, prefix []string) bool {
 	b := false
