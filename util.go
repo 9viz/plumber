@@ -23,3 +23,26 @@ func shExec(scmd string) {
 		panic(err)
 	}
 }
+
+// Is s a man page?
+func isMan(s string) bool {
+	p := strings.Split(s, "(")
+	if len(p) == 1 {
+		return false
+	}
+
+	cmd := exec.Command("apropos", "-f", p[0])
+	err := cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	return cmd.ProcessState.ExitCode() == 0
+}
+
+// "Parse" man string and return name and section
+func parseMan(s string) (string, string) {
+	p := strings.Split(s, "(")
+	e := p[1][:len(p[1])-1] // Everything except )
+	return p[0], e
+}

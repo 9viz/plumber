@@ -43,6 +43,56 @@ func handleHttp(url string) {
 	}
 }
 
+// Try to open the file. Returns true if succeded
+func handleFile(path string) bool {
+	if isFile(path) {
+		openFile(path, getFileType(path))
+		return true
+	}
+	p, b := isFileInCache(path)
+	if b {
+		openFile(p, getFileType(p))
+	}
+	return false
+}
+
+// Try to open directory in terminal. Returns true if succeded
+func handleDir(path string) bool {
+	if isDir(path) {
+		err := os.Chdir(path)
+		if err != nil {
+			panic(err)
+		}
+		shExec(App["term"])
+		return true
+	}
+	p, b := isDirInCache(path)
+	if b {
+		err := os.Chdir(p)
+		if err != nil {
+			panic(err)
+		}
+		shExec(App["term"])
+		return false
+	}
+	return false
+}
+
+// Other stuff that could be done with the string
+func other(s string) {
+	switch {
+	case isMan(s):
+		n, s := parseMan(s)
+		shExec(App["man"] + " " + s + " " + n)
+	case handleFile(s):
+		os.Exit(0)
+	case handleDir(s):
+		os.Exit(0)
+	default:
+		shExec(App["search"] + " " + s)
+	}
+}
+
 func main() {
 	str := getString()
 	switch {
@@ -52,9 +102,7 @@ func main() {
 		shExec("ytdl -o - " + str + " | mpv -")
 	case hasAnyPrefix(str, []string{"http://", "https://"}):
 		handleHttp(str)
-	// TODO: check if str is in file,dir cache or a man page
-	// case isfile, isdir:
 	default:
-		shExec(App["search"] + " " + str)
+		other(str)
 	}
 }
