@@ -19,16 +19,15 @@ func hasAnyPrefix(s string, prefix []string) bool {
 
 // Get Content-Type of http.Response without charset
 func getContentType(resp *http.Response) string {
-	return strings.Split(resp.Header["Content-Type"][0], ";")[0]
+	return strings.Split(resp.Header.Get("Content-Type"), ";")[0]
 }
 
-// Get string from user. Could be argv[1] or PLUMB env var
+// Get string from user. Could be argv[1:] or PLUMB env var
 func getString() string {
 	if len(os.Args) > 1 {
 		return strings.Join(os.Args[1:], " ")
-	} else {
-		return os.Getenv("PLUMB")
 	}
+	return os.Getenv("PLUMB")
 }
 
 // Get Content-Type of the file reciding in path
