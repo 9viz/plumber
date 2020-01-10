@@ -46,7 +46,7 @@ OLoop:
 // Is path a file?
 func isFile(path string) bool {
 	inf, err := os.Stat(path)
-	return os.IsExist(err) && !inf.IsDir()
+	return err == nil && !inf.IsDir()
 }
 
 // Read the contents of the file completely
@@ -67,12 +67,6 @@ OLoop:
 		n, err = f.Read(buf)
 	}
 	return str, nil
-}
-
-// Is path a directory?
-func isDir(path string) bool {
-	inf, _ := os.Stat(path)
-	return inf.IsDir()
 }
 
 // Is the given path in fileCache?
@@ -97,12 +91,18 @@ func isPathInCache(path, cachePath string) (string, bool) {
 	return "", false
 }
 
-// Is path in directory cache?
-func isDirInCache(path string) (string, bool) {
-	return isPathInCache(path, dirCache)
-}
-
 // Is path in file cache?
 func isFileInCache(path string) (string, bool) {
 	return isPathInCache(path, fileCache)
+}
+
+// Is path a directory?
+func isDir(path string) bool {
+	inf, err := os.Stat(path)
+	return err == nil && inf.IsDir()
+}
+
+// Is path in directory cache?
+func isDirInCache(path string) (string, bool) {
+	return isPathInCache(path, dirCache)
 }

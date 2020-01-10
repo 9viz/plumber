@@ -45,7 +45,6 @@ func handleHttp(url string) {
 
 func main() {
 	str := getString()
-
 	switch {
 	case str == "":
 		os.Exit(0) // quit quietly
