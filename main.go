@@ -50,7 +50,7 @@ func getFileContentType(path string) string {
 
 // execute Cmd in the background through sh
 func shExec(scmd string) {
-	// TODO: DONT USE SH
+	// using sh is now a design decision
 	cmd := exec.Command("sh", "-c", scmd)
 	err := cmd.Start()
 	if err != nil {
