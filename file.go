@@ -85,7 +85,7 @@ func isPathInCache(path, cachePath string) (string, bool) {
 	// O(n) :(
 	for _, c := range cache {
 		if strings.HasSuffix(c, path) {
-			return c, false
+			return c, true
 		}
 	}
 	return "", false

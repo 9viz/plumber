@@ -52,6 +52,7 @@ func handleFile(path string) bool {
 	p, b := isFileInCache(path)
 	if b {
 		openFile(p, getFileType(p))
+		return true
 	}
 	return false
 }
@@ -73,7 +74,7 @@ func handleDir(path string) bool {
 			panic(err)
 		}
 		shExec(App["term"])
-		return false
+		return true
 	}
 	return false
 }
