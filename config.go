@@ -11,4 +11,7 @@ var (
 		"man":             "st -g 80x40+500+250 -e man",
 		"search":          "palemoon --new-window --search",
 	}
+
+	// fileCache = ""
+	// dirCache  = ""
 )
