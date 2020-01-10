@@ -47,6 +47,8 @@ func main() {
 	str := getString()
 
 	switch {
+	case str == "":
+		os.Exit(0) // quit quietly
 	case strings.HasPrefix(str, "https://www.youtube.com/watch?v="):
 		shExec("ytdl -o - " + str + " | mpv -")
 	case hasAnyPrefix(str, []string{"http://", "https://"}):

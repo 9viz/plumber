@@ -42,3 +42,50 @@ OLoop:
 		}
 	}
 }
+
+// Is path a file?
+func isFile(path string) bool {
+	inf, err := os.Stat(path)
+	return os.IsExist(err) && !inf.IsDir()
+}
+
+// Read the contents of the file completely
+func readFile(f *os.File) (string, error) {
+	str := ""
+	buf := make([]byte, 512)
+	n, err := f.Read(buf)
+OLoop:
+	for {
+		switch {
+		case n == 0:
+			break OLoop
+		case err != nil:
+			return "", err
+		}
+		str = str + string(buf[:n])
+		n, err = f.Read(buf)
+	}
+	return str, nil
+}
+
+// Is the given path in fileCache?
+func isFileInCache(path string) (string, bool) {
+	f, err := os.Open(fileCache)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+	c, err := readFile(f)
+	if err != nil {
+		panic(err)
+	}
+
+	cache := strings.Split(c, "\n")
+	// O(n) :(
+	for _, c := range cache {
+		if strings.HasSuffix(c, path) {
+			return c, false
+		}
+	}
+	return "", false
+}

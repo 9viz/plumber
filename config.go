@@ -12,6 +12,6 @@ var (
 		"search":          "palemoon --new-window --search",
 	}
 
-	// fileCache = ""
+	fileCache = "/home/viz/usr/local/share/cache/plumb/filec"
 	// dirCache  = ""
 )
