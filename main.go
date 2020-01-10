@@ -21,7 +21,7 @@ func handleHttp(url string) {
 	if err != nil {
 		panic(err)
 	}
-	ct := getContentType(resp)
+	ct := strings.Split(resp.Header.Get("Content-Type"), ";")[0]
 	switch {
 	case ct == "text/html":
 		shExec(App[ct] + url)

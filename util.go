@@ -1,7 +1,6 @@
 package main
 
 import (
-	"net/http"
 	"os/exec"
 	"strings"
 )
@@ -13,11 +12,6 @@ func hasAnyPrefix(s string, prefix []string) bool {
 		b = b || strings.HasPrefix(s, p)
 	}
 	return b
-}
-
-// Get Content-Type of http.Response without charset
-func getContentType(resp *http.Response) string {
-	return strings.Split(resp.Header.Get("Content-Type"), ";")[0]
 }
 
 // execute Cmd in the background through sh
