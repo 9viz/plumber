@@ -54,6 +54,7 @@ func readFile(f *os.File) (string, error) {
 	str := ""
 	buf := make([]byte, 512)
 	n, err := f.Read(buf)
+
 OLoop:
 	for {
 		switch {
@@ -62,15 +63,21 @@ OLoop:
 		case err != nil:
 			return "", err
 		}
-		str = str + string(buf[:n])
+		str += string(buf[:n])
 		n, err = f.Read(buf)
 	}
 	return str, nil
 }
 
+// Is path a directory?
+func isDir(path string) bool {
+	inf, _ := os.Stat(path)
+	return inf.IsDir()
+}
+
 // Is the given path in fileCache?
-func isFileInCache(path string) (string, bool) {
-	f, err := os.Open(fileCache)
+func isPathInCache(path, cachePath string) (string, bool) {
+	f, err := os.Open(cachePath)
 	if err != nil {
 		panic(err)
 	}
@@ -88,4 +95,14 @@ func isFileInCache(path string) (string, bool) {
 		}
 	}
 	return "", false
+}
+
+// Is path in directory cache?
+func isDirInCache(path string) (string, bool) {
+	return isPathInCache(path, dirCache)
+}
+
+// Is path in file cache?
+func isFileInCache(path string) (string, bool) {
+	return isPathInCache(path, fileCache)
 }

@@ -13,5 +13,5 @@ var (
 	}
 
 	fileCache = "/home/viz/usr/local/share/cache/plumb/filec"
-	// dirCache  = ""
+	dirCache  = "/home/viz/usr/local/share/cache/plumb/dirc"
 )
