@@ -90,7 +90,7 @@ func other(s string) {
 	case handleDir(s):
 		os.Exit(0)
 	default:
-		shExec(App["search"] + " " + s)
+		shExec(App["search"] + " '" + s + "'")
 	}
 }
 
