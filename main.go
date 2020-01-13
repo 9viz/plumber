@@ -85,10 +85,8 @@ func other(s string) {
 	case isMan(s):
 		n, s := parseMan(s)
 		shExec(App["man"] + " " + s + " " + n)
-	case handleFile(s):
-		os.Exit(0)
-	case handleDir(s):
-		os.Exit(0)
+	case handleFile(s), handleDir(s):
+		break
 	default:
 		shExec(App["search"] + " '" + s + "'")
 	}
