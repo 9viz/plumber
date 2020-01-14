@@ -94,10 +94,11 @@ func other(s string) {
 
 func main() {
 	str := getString()
+	yt := []string{"https://youtube.com/watch?v=", "https://youtu.be/"}
 	switch {
 	case str == "":
 		os.Exit(0) // quit quietly
-	case strings.HasPrefix(str, "https://www.youtube.com/watch?v="):
+	case hasAnyPrefix(str, yt):
 		shExec("ytdl -o - " + str + " | mpv -")
 	case hasAnyPrefix(str, []string{"http://", "https://"}):
 		handleHttp(str)
