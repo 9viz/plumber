@@ -94,7 +94,7 @@ func other(s string) {
 
 func main() {
 	str := getString()
-	yt := []string{"https://youtube.com/watch?v=", "https://youtu.be/"}
+	yt := []string{"https://www.youtube.com/watch?v=", "https://youtu.be/"}
 	switch {
 	case str == "":
 		os.Exit(0) // quit quietly
