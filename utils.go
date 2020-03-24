@@ -43,8 +43,18 @@ func IsMan(str string) bool {
 // Check IsMan to know manpage-like means
 func ParseMan(str string) (string, string, error) {
 	if !IsMan(str) {
-		return "", "", fmt.Errorf("ParseMan: %s is not manpage-like", str)
+		return "", "", fmt.Errorf("utils.go/ParseMan: %s is not manpage-like", str)
 	}
 	m := strings.Split(str, "(")
 	return m[0], m[1][:len(m[1])-1], nil
+}
+
+// Is the string like a URL that can be viewed in a browser?
+// It has to start with http://, https:// or ftp://
+func IsUrl(str string) bool {
+	b := false
+	for _, p := range []string{"https://", "http://", "ftp://"} {
+		b = b || strings.HasPrefix(str, p)
+	}
+	return b
 }

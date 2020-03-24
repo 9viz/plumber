@@ -89,3 +89,25 @@ func TestParseMan(t *testing.T) {
 		})
 	}
 }
+
+func TestIsUrl(t *testing.T) {
+	testData := []struct {
+		url string
+		expected bool
+	}{
+		{"https://youtube.com/", true},
+		{"asdjaskdj", false},
+		{"/home/viz/.config", false},
+		{"ftp://youtube.com", true},
+		{"http://youtube.com", true},
+	}
+
+	for _, d := range testData {
+		t.Run(fmt.Sprintf("%s", d.url), func(t *testing.T) {
+			res := IsUrl(d.url)
+			if res != d.expected {
+				t.Errorf("Expected %t, got %t", d.expected, res)
+			}
+		})
+	}
+}
