@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 )
@@ -9,6 +10,12 @@ import (
 func IsFile(path string) bool {
 	inf, err := os.Stat(path)
 	return err == nil && !inf.IsDir()
+}
+
+// Is path a valid directory?
+func IsDir(path string) bool {
+	inf, err := os.Stat(path)
+	return err == nil && inf.IsDir()
 }
 
 // Is name(section) a man page? Section is a string
@@ -29,4 +36,15 @@ func IsManPage(name string, section string) bool {
 func IsMan(str string) bool {
 	m := strings.Split(str, "(")
 	return len(m) == 2 && string(m[1][len(m[1])-1]) == ")"
+}
+
+// Parse string into name and section
+// Returns an error when the string is not manpage-like
+// Check IsMan to know manpage-like means
+func ParseMan(str string) (string, string, error) {
+	if !IsMan(str) {
+		return "", "", fmt.Errorf("ParseMan: %s is not manpage-like", str)
+	}
+	m := strings.Split(str, "(")
+	return m[0], m[1][:len(m[1])-1], nil
 }
