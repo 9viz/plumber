@@ -92,7 +92,7 @@ func TestParseMan(t *testing.T) {
 
 func TestIsUrl(t *testing.T) {
 	testData := []struct {
-		url string
+		url      string
 		expected bool
 	}{
 		{"https://youtube.com/", true},
@@ -107,6 +107,24 @@ func TestIsUrl(t *testing.T) {
 			res := IsUrl(d.url)
 			if res != d.expected {
 				t.Errorf("Expected %t, got %t", d.expected, res)
+			}
+		})
+	}
+}
+
+func TestGetMimeType(t *testing.T) {
+	testData := []struct {
+		path, expected string
+	}{
+		{"/home/viz/src/go/plumber/utils.go", "text/plain"},
+		{"/home/viz/med/img/art/ta2017_the_letter.jpg", "image/jpeg"},
+	}
+
+	for _, d := range testData {
+		t.Run(fmt.Sprintf("%s", d.path), func(t *testing.T) {
+			res, err := GetMimeType(d.path)
+			if res != d.expected || err != nil {
+				t.Errorf("Expected %s, got %s (error %s)", d.expected, res, err)
 			}
 		})
 	}
