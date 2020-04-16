@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 )
 
@@ -23,11 +24,10 @@ func IsDir(path string) bool {
 // because manpages can have non numerical sections.
 // Examples include perl's manpage.
 func IsManPage(name string, section string) bool {
-	// MANPATH isn't set by every distro (read: NixOS)
-	// Investigate a way other than calling apropos and checking the exit code
 	for _, m := range strings.Split(os.Getenv("MANPATH"), ":") {
-		// MANPATH/manSECTION/name.SECTION
-		if IsFile(m + "/man" + section + "/" + name + "." + section) {
+		p := path.Join(m, "man"+section, name+"."+section)
+		// Also consider compressed manpages
+		if IsFile(p) || IsFile(p+".gz") {
 			return true
 		}
 	}

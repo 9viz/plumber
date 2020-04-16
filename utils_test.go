@@ -12,7 +12,7 @@ func TestIsDir(t *testing.T) {
 	}{
 		{"/root", true},
 		{"/home/viz", true},
-		{"/home/viz/.config", false},
+		{"/home/viz/.profile", false},
 		{"/home/viz/lib", true},
 	}
 
